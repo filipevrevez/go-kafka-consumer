@@ -1,0 +1,24 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: kafka-scaledobject
+  namespace: default
+  annotations:
+    scaledobject.keda.sh/transfer-hpa-ownership: "true"
+spec:
+  scaleTargetRef:
+    name: kafka-consumer
+  pollingInterval: 10
+  idleReplicaCount: 0 # Optional. Default: ignored, must be less than minReplicaCount
+  minReplicaCount: 1 # Optional. Default: 0
+  maxReplicaCount: 10
+  triggers:
+    - type: kafka
+      metadata:
+        bootstrapServers: "kafka-headless.default:9092"
+        consumerGroup: my-group # Make sure that this consumer group name is the same one as the one that is consuming topics
+        topic: test-topic
+        # Optional
+        lagThreshold: "5"
+        offsetResetPolicy: latest
+        allowIdleConsumers: "true"
