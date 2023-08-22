@@ -1,0 +1,50 @@
+name: Release
+
+on:
+  release:
+    types: 
+      - published
+
+permissions:
+  contents: read
+  pull-requests: write
+  packages: write
+
+
+env:
+    REGISTRY: ghcr.io
+    IMAGE_NAME: ${{ github.repository }}
+  
+jobs:
+  build_release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📩 Code checkout
+        uses: actions/checkout@v3.5.2
+      
+      - name: Log in to Quay.io
+        uses: redhat-actions/podman-login@v1.6
+        with:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: ${{ env.REGISTRY }}
+      
+      - name: 📦 Buildah Build
+        id: build-image
+        uses: redhat-actions/buildah-build@v2.12
+        with:
+          containerfiles: ops/Containerfile
+          tags: ${{ github.ref_name }} ${{ github.sha }} latest
+          image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      
+      - name: 📦 Buildah Push
+        id: push-to-registry
+        uses: redhat-actions/push-to-registry@v2.7
+        with:
+          image: ${{ steps.build-image.outputs.image }}
+          tags: ${{ steps.build-image.outputs.tags }}
+          registry: ${{ env.REGISTRY }}
+
+      - name: Print image url
+        run: echo "🎉 Image pushed to ${{ steps.push-to-registry.outputs.registry-path }}"
