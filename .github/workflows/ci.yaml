@@ -80,3 +80,4 @@ jobs:
 
       - name: Print image url
         run: echo "🎉 Image pushed to ${{ steps.push-to-registry.outputs.registry-path }}"
+        
