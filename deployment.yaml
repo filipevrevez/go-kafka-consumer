@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: kafka-consumer
-          image: ghcr.io/ghcr.io/filipevrevez/go-kafka-consumer:v1.0.1
+          image: ghcr.io/ghcr.io/filipevrevez/go-kafka-consumer:v1.1.0
           resources:
             limits:
               memory: "128Mi"
@@ -44,3 +44,29 @@ spec:
         target:
           type: Utilization
           averageUtilization: 75
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-producer
+spec:
+  selector:
+    matchLabels:
+      app: kafka-producer
+  template:
+    metadata:
+      labels:
+        app: kafka-producer
+    spec:
+      containers:
+        - name: kafka-producer
+          image: ghcr.io/ghcr.io/filipevrevez/go-kafka-consumer-producer:v1.1.0
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          env:
+            - name: kafkaURL
+              value: "kafka-headless:9092"
+            - name: topic
+              value: "test-topic"

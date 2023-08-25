@@ -9,12 +9,12 @@ RUN apk update && apk add --no-cache git
 
 WORKDIR /app
 
-COPY go.mod .
-COPY go.sum .
+COPY consumer/go.mod .
+COPY consumer/go.sum .
 
 RUN go mod download
 
-COPY . .
+COPY consumer/. .
 
 # Build the binary.
 RUN CGO_ENABLED=0 GOOS=linux go build -o main

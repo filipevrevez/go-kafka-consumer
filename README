@@ -35,9 +35,9 @@ helm upgrade --install kafka rhcharts/kafka -f kafka-values.yaml --namespace kaf
 Port-forward to the Kafka broker (one per terminal window):
 
 ```bash
-kubectl port-forward --namespace default svc/kafka-0-external 32400:9094
-kubectl port-forward --namespace default svc/kafka-1-external 32401:9094
-kubectl port-forward --namespace default svc/kafka-2-external 32402:9094
+kubectl port-forward --namespace kafka kafka-0 32400:9094
+kubectl port-forward --namespace kafka kafka-1 32401:9094
+kubectl port-forward --namespace kafka kafka-2 32402:9094
 ```
 
 Using [Conduktor](https://www.conduktor.io/), create a topic called `test-topic` with 3 partitions and 3 replicas.
@@ -64,3 +64,7 @@ kubectl apply -f keda.yaml
 
 Now, if you put some data into the topic, you should see the consumer print the messages to the console again.
 You should also see the ScaledObject scale the deployment to some replicas depending on your configuration.
+
+## Repositories used
+
+[Segmentio kakfka go](https://github.com/segmentio/kafka-go)
