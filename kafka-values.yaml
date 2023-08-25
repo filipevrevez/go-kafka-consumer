@@ -15,7 +15,7 @@ nameOverride: ""
 fullnameOverride: ""
 
 ## Kafka Cluster
-replicaCount: 3
+replicaCount: 1
 maxUnavailable: 1
 
 ## Kafka Configuration
@@ -48,7 +48,7 @@ port:
   kafkaInternal: 9092
   kafkaExternal: 9094
 externalAccess:
-  enabled: true
+  enabled: false
   initNodePort: 32400
 ## turn to support nodePort in docker desktop
 isDocker: true

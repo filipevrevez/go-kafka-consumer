@@ -22,6 +22,9 @@ func main() {
 	// get kafka writer using environment variables.
 	kafkaURL := os.Getenv("kafkaURL")
 	topic := os.Getenv("topic")
+
+	createTopic(kafkaURL, topic)
+
 	writer := newKafkaWriter(kafkaURL, topic)
 	defer writer.Close()
 	fmt.Println("start producing ... !!")
@@ -38,5 +41,26 @@ func main() {
 			fmt.Println("produced", key)
 		}
 		time.Sleep(1 * time.Second)
+	}
+}
+
+func createTopic(kafkaURL, topic string) {
+	conn, err := kafka.DialLeader(context.Background(), "tcp", kafkaURL, topic, 0)
+	if err != nil {
+		fmt.Println("cannot connect to kafka")
+		panic(err)
+	}
+	defer conn.Close()
+
+	topicConfig := kafka.TopicConfig{
+		Topic:             topic,
+		NumPartitions:     3,
+		ReplicationFactor: 3,
+	}
+
+	err = conn.CreateTopics(topicConfig)
+	if err != nil {
+		fmt.Println("cannot create topic")
+		panic(err)
 	}
 }
