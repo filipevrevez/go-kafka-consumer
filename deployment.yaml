@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: kafka-consumer
-          image: ghcr.io/ghcr.io/filipevrevez/go-kafka-consumer:v.1.1.1
+          image: ghcr.io/ghcr.io/filipevrevez/go-kafka-consumer:v1.2.0
           resources:
             limits:
               memory: "128Mi"
@@ -42,7 +42,7 @@ spec:
     spec:
       containers:
         - name: kafka-producer
-          image: ghcr.io/ghcr.io/filipevrevez/go-kafka-consumer-producer:v.1.1.1
+          image: ghcr.io/ghcr.io/filipevrevez/go-kafka-consumer-producer:v.1.2.0
           resources:
             limits:
               memory: "128Mi"
