@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/google/uuid"
@@ -52,10 +53,28 @@ func createTopic(kafkaURL, topic string) {
 	}
 	defer conn.Close()
 
+	var numPartitions int
+	var replicationFactor int
+
+	numPartitionsStr := os.Getenv("TopicPartitions")
+	replicationFactorStr := os.Getenv("ReplicationFactor")
+
+	if numPartitionsStr == "" {
+		numPartitions = 1
+	} else {
+		numPartitions, _ = strconv.Atoi(numPartitionsStr)
+	}
+
+	if replicationFactorStr == "" {
+		replicationFactor = 1
+	} else {
+		replicationFactor, _ = strconv.Atoi(replicationFactorStr)
+	}
+
 	topicConfig := kafka.TopicConfig{
 		Topic:             topic,
-		NumPartitions:     3,
-		ReplicationFactor: 1,
+		NumPartitions:     numPartitions,
+		ReplicationFactor: replicationFactor,
 	}
 
 	err = conn.CreateTopics(topicConfig)

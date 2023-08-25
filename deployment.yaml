@@ -14,14 +14,14 @@ spec:
     spec:
       containers:
         - name: kafka-consumer
-          image: ghcr.io/ghcr.io/filipevrevez/go-kafka-consumer:v1.2.1
+          image: ghcr.io/ghcr.io/filipevrevez/go-kafka-consumer:v1.2.2
           resources:
             limits:
               memory: "128Mi"
               cpu: "500m"
           env:
             - name: kafkaURL
-              value: "kafka-headless:9092"
+              value: "kafka-headless.kafka.svc.cluster.local:9092"
             - name: kafkaTopic
               value: "test-topic"
             - name: kafkaGroup
@@ -42,13 +42,17 @@ spec:
     spec:
       containers:
         - name: kafka-producer
-          image: ghcr.io/ghcr.io/filipevrevez/go-kafka-consumer-producer:v1.2.1
+          image: ghcr.io/ghcr.io/filipevrevez/go-kafka-consumer-producer:v1.2.2
           resources:
             limits:
               memory: "128Mi"
               cpu: "500m"
           env:
             - name: kafkaURL
-              value: "kafka-headless:9092"
+              value: "kafka-headless.kafka.svc.cluster.local:9092"
             - name: topic
               value: "test-topic"
+            - name: TopicPartitions
+              value: "1"
+            - name: ReplicationFactor
+              value: "1"
