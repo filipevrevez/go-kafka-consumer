@@ -55,7 +55,7 @@ func createTopic(kafkaURL, topic string) {
 	topicConfig := kafka.TopicConfig{
 		Topic:             topic,
 		NumPartitions:     3,
-		ReplicationFactor: 3,
+		ReplicationFactor: 1,
 	}
 
 	err = conn.CreateTopics(topicConfig)
