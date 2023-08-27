@@ -23,6 +23,15 @@ func main() {
 	// get kafka writer using environment variables.
 	kafkaURL := os.Getenv("kafkaURL")
 	topic := os.Getenv("topic")
+	sleepTimestr := os.Getenv("sleepTime")
+
+	var sleepTime int
+
+	if sleepTimestr == "" {
+		sleepTime = 1000
+	} else {
+		sleepTime, _ = strconv.Atoi(sleepTimestr)
+	}
 
 	createTopic(kafkaURL, topic)
 
@@ -41,7 +50,7 @@ func main() {
 		} else {
 			fmt.Println("produced", key)
 		}
-		time.Sleep(1 * time.Second)
+		time.Sleep(time.Duration(sleepTime) * time.Millisecond)
 	}
 }
 
