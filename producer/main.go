@@ -46,7 +46,7 @@ func main() {
 }
 
 func createTopic(kafkaURL, topic string) {
-	conn, err := kafka.DialLeader(context.Background(), "tcp", kafkaURL, topic, 0)
+	conn, err := kafka.Dial("tcp", kafkaURL)
 	if err != nil {
 		fmt.Println("cannot connect to kafka")
 		panic(err)
