@@ -16,9 +16,9 @@ spec:
     - type: kafka
       metadata:
         bootstrapServers: "kafka-headless.kafka.svc.cluster.local:9092"
-        consumerGroup: my-group # Make sure that this consumer group name is the same one as the one that is consuming topics
+        consumerGroup: test-group # Make sure that this consumer group name is the same one as the one that is consuming topics
         topic: test-topic
         # Optional
-        lagThreshold: "5"
+        lagThreshold: "2"
         offsetResetPolicy: latest
         allowIdleConsumers: "true"
